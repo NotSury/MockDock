@@ -234,7 +234,7 @@ export function TesterPage() {
               },
             ]}
           />
-          <div className="min-h-0 flex-1 overflow-y-auto p-4">
+          <div className="flex min-h-0 flex-1 flex-col overflow-y-auto p-4">
             {reqTab === "headers" ? (
               <div className="space-y-3">
                 <KeyValueEditor
@@ -249,8 +249,8 @@ export function TesterPage() {
                 </p>
               </div>
             ) : methodHasBody(method) ? (
-              <div className="space-y-2">
-                <CodeEditor value={body} onChange={setBody} height={300} onSubmit={send} ariaLabel="Request body editor" />
+              <div className="flex min-h-[300px] flex-1 flex-col gap-2">
+                <CodeEditor value={body} onChange={setBody} height="100%" className="flex-1" onSubmit={send} ariaLabel="Request body editor" />
                 {bodyIsInvalidJson && <p className="text-[11.5px] text-warn">Body isn't valid JSON — it will be sent as-is.</p>}
               </div>
             ) : (
@@ -306,10 +306,10 @@ export function TesterPage() {
                   { value: "headers", label: "Headers", badge: <CountBadge>{response.headers.length}</CountBadge> },
                 ]}
               />
-              <div className="min-h-0 flex-1 overflow-y-auto p-4">
+              <div className="flex min-h-0 flex-1 flex-col overflow-y-auto p-4">
                 {resTab === "body" ? (
                   response.body ? (
-                    <div className="relative">
+                    <div className="relative flex min-h-[340px] flex-1 flex-col">
                       <div className="absolute right-2 top-2 z-10">
                         <CopyButton value={response.body} label="Copy body" />
                       </div>
@@ -317,7 +317,8 @@ export function TesterPage() {
                         value={responseIsJson ? prettyJson(response.body) : response.body}
                         language={responseIsJson ? "json" : "plaintext"}
                         readOnly
-                        height={380}
+                        height="100%"
+                        className="flex-1"
                         ariaLabel="Response body"
                       />
                     </div>

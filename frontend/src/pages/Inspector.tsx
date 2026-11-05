@@ -352,7 +352,7 @@ export function InspectorPage() {
             <table className="w-full text-[12px]">
               <thead className="sticky top-0 z-10 bg-ink-900/95 backdrop-blur">
                 <tr className="border-b border-ink-700 text-left text-[10.5px] font-semibold uppercase tracking-wider text-fg-faint">
-                  <th className="w-[92px] px-4 py-2 font-semibold">Time</th>
+                  <th className="w-[96px] px-4 py-2 font-semibold">Time</th>
                   <th className="w-[64px] py-2 font-semibold">Method</th>
                   <th className="py-2 font-semibold">Path</th>
                   <th className="w-[80px] py-2 font-semibold">Status</th>
@@ -373,7 +373,7 @@ export function InspectorPage() {
                       r.id === selectedId ? "bg-ink-750" : "hover:bg-ink-800/70",
                     )}
                   >
-                    <td className="px-4 py-2 font-mono text-[11px] text-fg-subtle">
+                    <td className="whitespace-nowrap px-4 py-2 font-mono text-[11px] text-fg-subtle">
                       <Tooltip content={`${formatDateTime(r.created_at)} · ${timeAgo(r.created_at)}`}>
                         <span>{formatTime(r.created_at)}</span>
                       </Tooltip>

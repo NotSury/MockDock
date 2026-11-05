@@ -13,8 +13,8 @@ export default defineConfig({
     strictPort: true,
     // The UI talks to the backend through same-origin paths in development.
     proxy: {
-      "/api": { target: BACKEND, changeOrigin: false },
-      "/mock": { target: BACKEND, changeOrigin: false },
+      "/api": { target: BACKEND, changeOrigin: true },
+      "/mock": { target: BACKEND, changeOrigin: true },
     },
   },
   preview: { host: "127.0.0.1", port: 4173 },

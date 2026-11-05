@@ -4,6 +4,7 @@ import EditorWorker from "monaco-editor/editor/editor.worker?worker";
 import JsonWorker from "monaco-editor/language/json/json.worker?worker";
 import { useEffect, useRef } from "react";
 import type { CodeEditorProps } from "./CodeEditor";
+import { jsonErrorPosition } from "../lib/template";
 
 // Bundle Monaco locally (no CDN) — MockDock must work fully offline.
 self.MonacoEnvironment = {
@@ -64,8 +65,9 @@ function defineTheme(m: typeof monaco) {
       "editorOverviewRuler.border": "#00000000",
     },
   });
-  // Let MockDock's {{placeholders}} through without schema complaints.
-  m.json.jsonDefaults.setDiagnosticsOptions({ validate: true, allowComments: false, trailingCommas: "error" });
+  // Monaco's own JSON validator would flag MockDock's bare {{placeholders}}, so
+  // we turn it off and publish markers from our template-aware validator instead.
+  m.json.jsonDefaults.setDiagnosticsOptions({ validate: false });
 }
 
 const TEMPLATE_RE = /\{\{\s*[A-Za-z_][\w.\-]*\s*\}\}/g;
@@ -115,6 +117,28 @@ export default function MonacoEditor({
   };
 
   useEffect(refreshDecorations, [value, highlightTemplates]);
+
+  // Error squiggle at the first JSON syntax error (template-aware).
+  useEffect(() => {
+    const model = editorRef.current?.getModel();
+    if (!model) return;
+    const err = language === "json" && !readOnly ? jsonErrorPosition(value) : null;
+    if (!err) {
+      monaco.editor.setModelMarkers(model, "mockdock", []);
+      return;
+    }
+    const pos = model.getPositionAt(Math.min(err.offset, value.length));
+    monaco.editor.setModelMarkers(model, "mockdock", [
+      {
+        severity: monaco.MarkerSeverity.Error,
+        message: err.message,
+        startLineNumber: pos.lineNumber,
+        startColumn: Math.max(1, pos.column - 1),
+        endLineNumber: pos.lineNumber,
+        endColumn: pos.column + 1,
+      },
+    ]);
+  }, [value, language, readOnly]);
 
   return (
     <Editor
