@@ -63,7 +63,7 @@ No backend code, no cloud account, and no internet connection needed. Everything
 - **Route matching** (`app/mock/matcher.py`) is a small pure-function module. The most specific route wins: `/users/me` beats `/users/:id`.
 - **Schema** comes from the SQLAlchemy models (`create_all`) and is versioned with SQLite's `PRAGMA user_version`. There's a migration hook in `app/db.py`.
 
-More detail, written for newcomers, is in **[HANDOVER.md](HANDOVER.md)**.
+More detail, written for newcomers, is in **[HANDOVER.md](HANDOVER.md)**. Verification results are in **[docs/ENGINEERING_REPORT.md](docs/ENGINEERING_REPORT.md)**.
 
 ```
 MockDock/
