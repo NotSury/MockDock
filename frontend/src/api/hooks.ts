@@ -76,7 +76,15 @@ export function useUpdateProject() {
 
 export function useDeleteProject() {
   const invalidate = useInvalidateConfig();
-  return useMutation({ mutationFn: api.deleteProject, onSuccess: invalidate });
+  const qc = useQueryClient();
+  return useMutation({
+    mutationFn: api.deleteProject,
+    onSuccess: (_void, id) => {
+      qc.removeQueries({ queryKey: qk.project(id) });
+      qc.removeQueries({ queryKey: qk.endpoints(id) });
+      invalidate();
+    },
+  });
 }
 
 export function useImportProject() {

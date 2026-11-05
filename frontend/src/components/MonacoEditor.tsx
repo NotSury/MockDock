@@ -180,6 +180,9 @@ export default function MonacoEditor({
         domReadOnly: readOnly,
         contextmenu: !readOnly,
         fixedOverflowWidgets: true,
+        quickSuggestions: false,
+        wordBasedSuggestions: "off",
+        suggestOnTriggerCharacters: false,
       }}
     />
   );
