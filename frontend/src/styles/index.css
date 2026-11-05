@@ -1,0 +1,131 @@
+@import "tailwindcss";
+
+@custom-variant dark (&:where(.dark, .dark *));
+
+@theme {
+  --font-sans: "Inter Variable", ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif;
+  --font-mono: "JetBrains Mono Variable", ui-monospace, SFMono-Regular, Menlo, monospace;
+
+  /* Surfaces — a slightly blue-black ink */
+  --color-ink-950: #07090c;
+  --color-ink-900: #0a0c10;
+  --color-ink-850: #0e1116;
+  --color-ink-800: #12161c;
+  --color-ink-750: #171b23;
+  --color-ink-700: #1d222b;
+  --color-ink-600: #262c37;
+  --color-ink-500: #343b48;
+  --color-ink-400: #4d5566;
+
+  /* Text */
+  --color-fg: #e8eaef;
+  --color-fg-muted: #a2a9b8;
+  --color-fg-subtle: #6c7486;
+  --color-fg-faint: #4a5161;
+
+  /* Brand: "harbor" teal */
+  --color-brand-300: #7af0dc;
+  --color-brand-400: #2dd4bf;
+  --color-brand-500: #14b8a6;
+  --color-brand-600: #0d9488;
+  --color-brand-950: #062a27;
+
+  /* HTTP methods */
+  --color-get: #60a5fa;
+  --color-post: #4ade80;
+  --color-put: #fbbf24;
+  --color-patch: #c084fc;
+  --color-delete: #fb7185;
+
+  /* Status */
+  --color-ok: #4ade80;
+  --color-redirect: #60a5fa;
+  --color-warn: #fbbf24;
+  --color-err: #fb7185;
+
+  --radius-xl: 0.875rem;
+
+  --animate-fade-in: fade-in 180ms ease-out;
+  --animate-slide-up: slide-up 220ms cubic-bezier(0.16, 1, 0.3, 1);
+  --animate-scale-in: scale-in 160ms cubic-bezier(0.16, 1, 0.3, 1);
+  --animate-pulse-dot: pulse-dot 2s ease-in-out infinite;
+  --animate-shimmer: shimmer 1.6s linear infinite;
+
+  @keyframes fade-in {
+    from { opacity: 0; }
+    to { opacity: 1; }
+  }
+  @keyframes slide-up {
+    from { opacity: 0; transform: translateY(6px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+  @keyframes scale-in {
+    from { opacity: 0; transform: scale(0.97); }
+    to { opacity: 1; transform: scale(1); }
+  }
+  @keyframes pulse-dot {
+    0%, 100% { box-shadow: 0 0 0 0 rgb(45 212 191 / 0.5); }
+    50% { box-shadow: 0 0 0 4px rgb(45 212 191 / 0); }
+  }
+  @keyframes shimmer {
+    from { background-position: -200% 0; }
+    to { background-position: 200% 0; }
+  }
+}
+
+@layer base {
+  html, body, #root { height: 100%; }
+  html { color-scheme: dark; }
+  body {
+    @apply bg-ink-900 text-fg font-sans antialiased;
+    font-size: 13.5px;
+    line-height: 1.5;
+    font-feature-settings: "cv11", "ss01", "ss03";
+  }
+  ::selection { background: rgb(45 212 191 / 0.28); }
+  :focus-visible { outline: 2px solid var(--color-brand-400); outline-offset: 2px; border-radius: 6px; }
+  button { cursor: pointer; }
+  button:disabled { cursor: not-allowed; }
+  code, kbd, pre, .font-mono { font-feature-settings: "calt" 0, "liga" 0; }
+
+  * { scrollbar-width: thin; scrollbar-color: var(--color-ink-600) transparent; }
+  *::-webkit-scrollbar { width: 10px; height: 10px; }
+  *::-webkit-scrollbar-thumb { background: var(--color-ink-600); border-radius: 999px; border: 3px solid transparent; background-clip: content-box; }
+  *::-webkit-scrollbar-thumb:hover { background-color: var(--color-ink-500); }
+}
+
+@layer components {
+  .panel {
+    @apply rounded-xl border border-ink-700/80 bg-ink-850;
+    box-shadow: 0 1px 0 0 rgb(255 255 255 / 0.03) inset, 0 1px 2px rgb(0 0 0 / 0.3);
+  }
+  .field {
+    @apply h-8 w-full rounded-md border border-ink-600 bg-ink-900 px-2.5 text-[13px] text-fg placeholder:text-fg-faint
+      transition-colors outline-none hover:border-ink-500 focus:border-brand-500/70 focus:ring-2 focus:ring-brand-400/15;
+  }
+  .label {
+    @apply mb-1.5 block text-[11.5px] font-medium tracking-wide text-fg-muted;
+  }
+  .eyebrow {
+    @apply text-[10.5px] font-semibold uppercase tracking-[0.12em] text-fg-subtle;
+  }
+  .skeleton {
+    background: linear-gradient(90deg, var(--color-ink-750) 0%, var(--color-ink-700) 50%, var(--color-ink-750) 100%);
+    background-size: 200% 100%;
+    @apply animate-shimmer rounded-md;
+  }
+  .grid-bg {
+    background-image:
+      linear-gradient(to right, rgb(255 255 255 / 0.025) 1px, transparent 1px),
+      linear-gradient(to bottom, rgb(255 255 255 / 0.025) 1px, transparent 1px);
+    background-size: 24px 24px;
+  }
+}
+
+/* Monaco: highlight {{template}} variables */
+.md-template-token {
+  color: #fbbf77 !important;
+  background: rgb(251 191 119 / 0.1);
+  border-radius: 3px;
+  box-shadow: 0 0 0 1px rgb(251 191 119 / 0.25);
+}
