@@ -292,3 +292,18 @@ def test_cors_restricted_to_local_frontend(client, project):
         headers={"Origin": "https://evil.example", "Access-Control-Request-Method": "DELETE"},
     )
     assert pre.status_code == 400
+
+
+def test_echoed_secrets_are_redacted_in_logged_response(client, project):
+    _create(
+        client,
+        project,
+        method="POST",
+        path="/echo",
+        scenarios=[{"name": "Echo", "body": '{"password": "{{body.password}}", "user": "{{body.user}}"}'}],
+    )
+    res = client.post("/mock/demo/echo", json={"user": "a", "password": "hunter2"})
+    assert res.json()["password"] == "hunter2"  # the caller still gets the real echo
+    log_id = client.get("/api/logs").json()["items"][0]["id"]
+    detail = client.get(f"/api/logs/{log_id}").json()
+    assert "hunter2" not in detail["response_body"]

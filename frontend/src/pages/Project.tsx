@@ -115,7 +115,7 @@ export function ProjectPage() {
             <Menu>
               <MenuTrigger asChild>
                 <IconButton label="Project actions" variant="outline">
-                  <MoreHorizontal className="size-4" />
+                  <MoreHorizontal className="size-[18px]" strokeWidth={2.25} />
                 </IconButton>
               </MenuTrigger>
               <MenuContent>

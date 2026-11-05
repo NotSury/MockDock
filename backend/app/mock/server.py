@@ -339,7 +339,8 @@ async def handle_mock(request: Request, project_slug: str, path: str = "") -> Re
         "request_body": redact_body(_decode_body(raw_body, content_type, limit)),
         "response_status": response.status_code,
         "response_headers": redact_headers(dict(response.headers)),
-        "response_body": response_text,
+        # Responses can echo request data via templates, so redact them too.
+        "response_body": redact_body(response_text),
         "duration_ms": duration_ms,
         "scenario_name": ("simulated-failure" if failed else res.scenario.name) if res.scenario else "",
         "matched": res.scenario is not None,

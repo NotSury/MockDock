@@ -272,7 +272,7 @@ export function EndpointEditor({
           <Menu>
             <MenuTrigger asChild>
               <IconButton label="More endpoint actions" size="md" variant="outline" className="h-9 w-9">
-                <MoreHorizontal className="size-4" />
+                <MoreHorizontal className="size-[18px]" strokeWidth={2.25} />
               </IconButton>
             </MenuTrigger>
             <MenuContent>

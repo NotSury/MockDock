@@ -69,7 +69,7 @@ function ProjectCard({ p, base }: { p: Project; base: string }) {
         <Menu>
           <MenuTrigger asChild>
             <IconButton label={`Actions for ${p.name}`}>
-              <MoreHorizontal className="size-4" />
+              <MoreHorizontal className="size-[18px]" strokeWidth={2.25} />
             </IconButton>
           </MenuTrigger>
           <MenuContent>

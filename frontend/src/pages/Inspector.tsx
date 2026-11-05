@@ -12,7 +12,7 @@ import { Tooltip } from "../components/Tooltip";
 import { Button, EmptyState, IconButton, Skeleton } from "../components/ui";
 import { cn } from "../lib/cn";
 import { replayableHeaders, toCurl } from "../lib/curl";
-import { formatDateTime, formatTime, timeAgo } from "../lib/format";
+import { copyText, formatDateTime, formatTime, timeAgo } from "../lib/format";
 import { HTTP_METHODS } from "../api/types";
 import { mockBaseUrl, methodStyle } from "../lib/http";
 
@@ -160,8 +160,8 @@ function CopyAsCurl({ curl }: { curl: string }) {
       variant="ghost"
       icon={<Terminal className="size-3.5" />}
       onClick={async () => {
-        await navigator.clipboard?.writeText(curl).catch(() => {});
-        toast.success("cURL command copied");
+        if (await copyText(curl)) toast.success("cURL command copied");
+        else toast.error("Couldn't access the clipboard");
       }}
     >
       Copy as cURL

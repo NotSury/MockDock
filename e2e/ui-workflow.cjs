@@ -64,7 +64,7 @@ function ok(extra = "") {
     await page.goto(BASE + "/tester");
     await page.getByLabel("Request URL").fill(`/mock/${slug}/users/42`);
     await page.getByRole("button", { name: "Send" }).click();
-    await page.getByText("200", { exact: false }).first().waitFor();
+    await page.locator(".monaco-editor .view-lines", { hasText: "Alice" }).first().waitFor();
     const body = (await page.locator(".monaco-editor .view-lines").first().innerText()).replace(/\u00a0/g, " ");
     if (!body.includes('"id": 42') || !body.includes("Alice")) throw new Error("unexpected body: " + body);
     await shot("e2e-tester");
@@ -118,6 +118,11 @@ function ok(extra = "") {
     if (SHOTS) await page.screenshot({ path: `${SHOTS}/e2e-failure.png` });
     process.exitCode = 1;
   } finally {
+    // Clean up even if a step failed, so reruns don't accumulate projects.
+    await page.evaluate(async (slug) => {
+      const projects = await (await fetch("/api/projects")).json();
+      for (const p of projects.filter((p) => p.slug === slug)) await fetch(`/api/projects/${p.id}`, { method: "DELETE" });
+    }, slug).catch(() => {});
     await browser.close();
   }
 })();

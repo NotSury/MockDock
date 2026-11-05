@@ -65,4 +65,7 @@ def redact_body(body: str) -> str:
         parsed = json.loads(body)
     except ValueError:
         return body
-    return json.dumps(_redact_obj(parsed), ensure_ascii=False, indent=2)
+    redacted = _redact_obj(parsed)
+    if redacted == parsed:
+        return body  # nothing sensitive: keep the original formatting
+    return json.dumps(redacted, ensure_ascii=False, indent=2)
