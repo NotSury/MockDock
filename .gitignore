@@ -1,0 +1,26 @@
+# Python
+__pycache__/
+*.py[cod]
+.venv/
+.pytest_cache/
+*.egg-info/
+
+# Data
+backend/data/
+*.db
+*.db-journal
+*.db-wal
+*.db-shm
+
+# Node
+node_modules/
+frontend/dist/
+frontend/coverage/
+*.log
+
+# Misc
+.DS_Store
+.idea/
+.vscode/
+test-results/
+playwright-report/
